@@ -4,7 +4,7 @@ import torch.optim
 import torch.utils.data
 
 
-def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
+def save_checkpoint(state, filename='checkpoint.pth.tar'):
     """
     Save the training model
     """
@@ -50,3 +50,8 @@ def accuracy(output, target, topk=(1,)):
         correct_k = correct[:k].view(-1).float().sum(0)
         res.append(correct_k.mul_(100.0 / batch_size))
     return res
+
+
+def write_log(filename, content):
+    with open(filename, 'a') as f:
+        f.write("\n" + content)

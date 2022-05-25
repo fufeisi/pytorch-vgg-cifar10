@@ -12,7 +12,7 @@ import torchvision.datasets as datasets
 import vgg
 
 from trainer import train, validate
-from tools import adjust_learning_rate, save_checkpoint
+from tools import adjust_learning_rate, save_checkpoint, write_log
 
 model_names = sorted(name for name in vgg.__dict__
     if name.islower() and not name.startswith("__")
@@ -128,6 +128,7 @@ def main():
         validate(val_loader, model, criterion, args)
         return
 
+    write_log(os.path.join(args.save_dir, 'training_log.txt'), str(args))
     for epoch in range(args.start_epoch, args.epochs):
         adjust_learning_rate(optimizer, epoch, args.lr)
 
@@ -139,12 +140,14 @@ def main():
 
         # remember best prec@1 and save checkpoint
         is_best = prec1 > best_prec1
-        best_prec1 = max(prec1, best_prec1)
-        save_checkpoint({
-            'epoch': epoch + 1,
-            'state_dict': model.state_dict(),
-            'best_prec1': best_prec1,
-        }, is_best, filename=os.path.join(args.save_dir, 'checkpoint_{}.tar'.format(epoch)))
+        if is_best:
+            best_prec1 = max(prec1, best_prec1)
+            save_checkpoint({
+                'epoch': epoch + 1,
+                'state_dict': model.state_dict(),
+                'best_prec1': best_prec1,
+            }, filename=os.path.join(args.save_dir, '{}_checkpoint_{}.tar'.format(args.arch, best_prec1)))
+        write_log(os.path.join(args.save_dir, 'training_log.txt'), 'epoch:'+best_prec1)
 
 
 if __name__ == '__main__':
