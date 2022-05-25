@@ -147,7 +147,7 @@ def main():
                 'state_dict': model.state_dict(),
                 'best_prec1': best_prec1,
             }, filename=os.path.join(args.save_dir, '{}_checkpoint_{}.tar'.format(args.arch, best_prec1)))
-        write_log(os.path.join(args.save_dir, 'training_log.txt'), 'epoch:'+best_prec1)
+        write_log(os.path.join(args.save_dir, 'training_log.txt'), 'epoch: '+str(round(best_prec1, 4)))
 
 
 if __name__ == '__main__':
