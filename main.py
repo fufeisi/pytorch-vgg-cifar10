@@ -146,8 +146,8 @@ def main():
                 'epoch': epoch + 1,
                 'state_dict': model.state_dict(),
                 'best_prec1': best_prec1,
-            }, filename=os.path.join(args.save_dir, '{}_checkpoint_{}.tar'.format(args.arch, best_prec1)))
-        write_log(os.path.join(args.save_dir, 'training_log.txt'), 'epoch: '+str(round(best_prec1, 4)))
+            }, filename=os.path.join(args.save_dir, '{}_checkpoint_{}_{}.tar'.format(args.arch, epoch + 1, best_prec1)))
+        write_log(os.path.join(args.save_dir, 'training_log.txt'), 'epoch: {}; Accuracy: {}.'.format(epoch + 1, best_prec1))
 
 
 if __name__ == '__main__':
