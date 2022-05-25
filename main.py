@@ -57,7 +57,7 @@ parser.add_argument('--save-dir', dest='save_dir',
 
 
 def main():
-    global args, best_prec1
+    best_prec1 = 0
     args = parser.parse_args()
     args.cpu = not torch.cuda.is_available()
     print(args)
